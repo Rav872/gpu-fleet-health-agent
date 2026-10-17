@@ -1,0 +1,41 @@
+stages:
+  - validate
+  - test
+
+repository-files:
+  stage: validate
+  image: alpine:3.20
+  script:
+    - test -s README.md
+    - test -s .gitignore
+    - test -s .gitlab-ci.yml
+
+# Enable these checks as soon as the Rust crate (Cargo.toml) is added.
+rust-format:
+  stage: validate
+  image: rust:stable
+  rules:
+    - exists:
+        - Cargo.toml
+  script:
+    - rustup component add rustfmt
+    - cargo fmt --all -- --check
+
+rust-clippy:
+  stage: validate
+  image: rust:stable
+  rules:
+    - exists:
+        - Cargo.toml
+  script:
+    - rustup component add clippy
+    - cargo clippy --all-targets --all-features -- -D warnings
+
+rust-tests:
+  stage: test
+  image: rust:stable
+  rules:
+    - exists:
+        - Cargo.toml
+  script:
+    - cargo test --all-targets

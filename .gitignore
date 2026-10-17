@@ -1,0 +1,16 @@
+# Rust build output
+/target/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.kubeconfig
+kubeconfig
+
+# Editor / OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
