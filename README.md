@@ -163,6 +163,13 @@ If this folder is already a Git repository, keep its existing history and add on
 - [ ] Add Prometheus scrape/alert examples and Grafana dashboard JSON.
 - [ ] Validate on a GPU test cluster, document supported version matrix and operator recovery procedure.
 
+feat/rust-agent-skeleton — Rust crate, configuration, logging, basic tests.
+feat/gpu-telemetry — NVML integration and mockable telemetry tests.
+feat/health-evaluator — ECC, temperature, and PCIe fault rules.
+feat/prometheus-metrics — scrape endpoint, probes, and metrics.
+feat/kubernetes-remediation — opt-in dry-run, then guarded cordon/drain.
+feat/deployment-monitoring — Kubernetes deployment files, alerts, and Grafana dashboard.
+
 ## Contributing
 
 Changes should include tests for health rules and remediation behavior, keep destructive actions opt-in, and update documentation when configuration, metrics, RBAC, or supported versions change. Do not test real cordon/drain actions against production clusters.

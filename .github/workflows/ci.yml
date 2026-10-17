@@ -31,7 +31,17 @@ jobs:
             echo "Cargo.toml not present yet; skipping Rust checks."
             exit 0
           fi
-          rustup toolchain install stable --profile minimal --component rustfmt --component clippy
-          cargo +stable fmt --all -- --check
-          cargo +stable clippy --all-targets --all-features -- -D warnings
-          cargo +stable test --all-targets
+      - name: Install Rust toolchain
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Check formatting
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: cargo fmt --all -- --check
+      - name: Run Clippy
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: cargo clippy --all-targets --all-features -- -D warnings
+      - name: Run tests
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        run: cargo test --all-targets
