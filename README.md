@@ -115,7 +115,22 @@ cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets
 ```
 
-The GitLab pipeline runs these checks when a Cargo manifest is present. Hardware-dependent integration tests should be isolated and explicitly enabled only on suitable runners.
+The GitHub Actions workflow and GitLab pipeline run these checks when a Cargo manifest is present. Hardware-dependent integration tests should be isolated and explicitly enabled only on suitable runners.
+
+## GitHub setup
+
+1. Sign in to GitHub and create a **blank repository** named `gpu-fleet-health-agent`. Do not initialize it with a README, `.gitignore`, or license; those files are already managed locally.
+2. Add the repository URL shown by GitHub as the `origin` remote, then push the local `main` branch. Use SSH if your GitHub SSH key is configured, or HTTPS if you have Git Credential Manager / browser authentication enabled. Never put a personal access token directly in a remote URL or commit it.
+3. In the repository's **Settings → Branches**, add a ruleset for `main`; require pull requests and successful status checks before merging.
+4. The workflow in `.github/workflows/ci.yml` runs on pushes and pull requests. Rust checks start automatically once `Cargo.toml` is added.
+5. Store any future deployment credentials in GitHub Actions secrets or use a trusted identity mechanism. Do not expose production cluster credentials to general-purpose GitHub-hosted runners; use isolated self-hosted GPU runners only for hardware tests.
+
+Example commands (substitute your repository URL; the initial local commit has already been created):
+
+```sh
+git remote add origin <your-github-repository-url>
+git push -u origin main
+```
 
 ## GitLab setup
 

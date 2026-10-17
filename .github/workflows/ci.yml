@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  repository-files:
+    name: Validate repository files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check starter files
+        run: |
+          test -s README.md
+          test -s .gitignore
+
+  rust:
+    name: Rust checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Rust checks when crate is added
+        run: |
+          if [ ! -f Cargo.toml ]; then
+            echo "Cargo.toml not present yet; skipping Rust checks."
+            exit 0
+          fi
+          rustup toolchain install stable --profile minimal --component rustfmt --component clippy
+          cargo +stable fmt --all -- --check
+          cargo +stable clippy --all-targets --all-features -- -D warnings
+          cargo +stable test --all-targets
