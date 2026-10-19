@@ -168,3 +168,11 @@ We are working on `feat/rust-agent-skeleton`. Small work-in-progress commits may
 - **Validation status:** Formatting, tests, and Clippy have not yet completed successfully. Treat the scaffold as work in progress; no merge is appropriate until the learner reviews it and all ticket checks pass.
 - **Not done today:** No GPU was rented, no NVML or Kubernetes integration was added, and no real remediation is implemented.
 - **Next session:** Start with Cargo metadata and Rust modules/types in Steps 1–3 above. Explain any unfamiliar tooling before running it; then review code and validate one check at a time.
+
+### 2026-10-18 — First validation pass
+
+- **Learning progress:** Reviewed the Cargo package metadata, library/executable split, configuration and error types, and telemetry/remediation interfaces. `cargo metadata --no-deps --format-version 1` succeeded.
+- **Formatting:** `cargo fmt --all -- --check` initially found layout differences in `src/config.rs` and `src/main.rs`; those were corrected, and the check then passed.
+- **Tests:** `cargo test --all-targets` is currently blocked before compilation/tests run: the resolved `clap_derive` version requires Cargo support for Edition 2024, which Cargo 1.79 does not have. This is a toolchain/dependency compatibility issue, not a test failure. We have not selected or applied a fix yet.
+- **Still pending:** Choose a compatible minimum Rust version or dependency set after understanding the trade-off; then rerun tests and Clippy. The ticket remains incomplete and must not be merged yet.
+- **Out of scope today:** No GPU, NVML, Kubernetes integration, Prometheus endpoint, or remediation behavior was added.

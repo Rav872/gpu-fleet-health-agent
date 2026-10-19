@@ -6,11 +6,7 @@ use thiserror::Error;
 #[command(version, about)]
 pub struct Config {
     /// Interval between GPU telemetry collection attempts, in seconds.
-    #[arg(
-        long,
-        env = "GPU_FLEET_COLLECTION_INTERVAL_SECS",
-        default_value_t = 30
-    )]
+    #[arg(long, env = "GPU_FLEET_COLLECTION_INTERVAL_SECS", default_value_t = 30)]
     pub collection_interval_secs: u64,
 
     /// Allow the agent to perform Kubernetes node remediation.
@@ -68,12 +64,9 @@ mod tests {
 
     #[test]
     fn zero_collection_interval_is_rejected() {
-        let config = Config::try_parse_from([
-            "gpu-fleet-health-agent",
-            "--collection-interval-secs",
-            "0",
-        ])
-        .expect("zero is syntactically a valid integer");
+        let config =
+            Config::try_parse_from(["gpu-fleet-health-agent", "--collection-interval-secs", "0"])
+                .expect("zero is syntactically a valid integer");
 
         assert_eq!(config.validate(), Err(ConfigError::ZeroCollectionInterval));
     }
